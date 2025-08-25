@@ -1,0 +1,22 @@
+[package]
+name = "netsoc-api-backend"
+version = "0.1.0"
+edition = "2024"
+authors = []
+license = "MIT"
+
+[dependencies]
+serde_json = "^1.0"
+actix-web = "4"
+
+[dependencies.rusqlite]
+version = "^0.37"
+features = ["serde_json"] # might be a good idea to include the "bundled" feature on some systems
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+wildcard_imports = "allow"
+enum_glob_use = "allow"
+
+[profile.release]
+lto = true
