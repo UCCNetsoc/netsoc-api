@@ -8,10 +8,7 @@ license = "MIT"
 [dependencies]
 serde_json = "^1.0"
 actix-web = "4"
-
-[dependencies.rusqlite]
-version = "^0.37"
-features = ["serde_json"] # might be a good idea to include the "bundled" feature on some systems
+rusqlite = { version = "^0.37", features = ["serde_json"] } # might be a good idea to include the "bundled" feature on some systems
 
 [lints.clippy]
 pedantic = { level = "warn", priority = -1 }
