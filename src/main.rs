@@ -1,5 +1,6 @@
 use rusqlite::{params, Connection, Result};
 
+#[derive(Debug)]
 struct Event {
     event_id: i64,
     name: String,
@@ -11,7 +12,7 @@ struct Event {
 
 fn main() -> Result<()> {
 
-    let conn = Connection::open_in_memory()?;
+    let conn = Connection::open("src/database.db")?;
 
     let mut stmt = conn.prepare("SELECT * FROM events;")?;
     let response = stmt.query_map([], |row| {
@@ -26,7 +27,14 @@ fn main() -> Result<()> {
     })?;
 
     for event in response {
-        println!("Found event {:?}", event?);
+        match event {
+            Ok(e) => {
+                println!("Found event with details:");
+                println!("Name: {:} \nLocation: {:} \nDate/Time: {:}", e.name, e.location, e.date);
+                
+            }
+            Err(e) => eprintln!("Error reading row: {}", e),
+        }
     }
     Ok(())
 }
