@@ -1,6 +1,8 @@
 use rusqlite::{params, Connection, Result};
+use serde::{Deserialize, Serialize};
+use serde_json::{json};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 struct Event {
     event_id: i64,
     name: String,
@@ -31,6 +33,9 @@ fn main() -> Result<()> {
             Ok(e) => {
                 println!("Found event with details:");
                 println!("Name: {:} \nLocation: {:} \nDate/Time: {:}", e.name, e.location, e.date);
+
+                let json = json!(e);
+                println!("{:}", json.to_string());
                 
             }
             Err(e) => eprintln!("Error reading row: {}", e),
