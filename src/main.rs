@@ -57,7 +57,9 @@ async fn api() -> AResult<impl Responder> {
     let json: String = json!(events).to_string();
 
     Ok(
-        HttpResponse::Ok().body(json)
+        HttpResponse::Ok()
+            .content_type("application/json")
+            .body(json)
     )
 }
 
