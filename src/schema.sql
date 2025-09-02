@@ -17,3 +17,15 @@ INSERT INTO events (name, date, location, public, image_url)
         true,
         "N/A"
     );
+
+
+
+
+INSERT INTO events (name, date, location, public, image_url)
+    VALUES (
+        "Demo Event",
+        "2026-01-01 11:11:11",
+        "WGB G.04",
+        false,
+        "N/A"
+    );
