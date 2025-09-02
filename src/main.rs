@@ -49,7 +49,11 @@ async fn api() -> AResult<impl Responder> {
     let mut events = Vec::new();
     for event in response {
         match event {
-            Ok(e) => { events.push(e); }
+            Ok(e) => {
+                if e.public {
+                    events.push(e);
+                }
+            }
             Err(e) => { eprintln!("Error reading row: {}", e); }
         }
     }
