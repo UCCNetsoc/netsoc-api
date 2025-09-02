@@ -1,7 +1,7 @@
-use rusqlite::{params, Connection, Result};
+use rusqlite::{Connection, Result};
 use serde::{Deserialize, Serialize};
 use serde_json::{json};
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, Result as AResult};
+use actix_web::{get, App, HttpResponse, HttpServer, Responder, Result as AResult};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Event {
@@ -16,7 +16,7 @@ struct Event {
 
 #[get("/")]
 async fn api() -> AResult<impl Responder> {
-    let conn = Connection::open("src/database.db")
+    let conn = Connection::open("db/database.db")
         .map_err(|e| {
             // Convert the rusqlite error into an Actix Web error
             actix_web::error::ErrorInternalServerError(e)
@@ -42,7 +42,7 @@ async fn api() -> AResult<impl Responder> {
     })
         .map_err(|e| {
             actix_web::error::ErrorInternalServerError(e)
-        })?;;
+        })?;
 
 
     // Making a vector to store events in
@@ -68,7 +68,7 @@ async fn api() -> AResult<impl Responder> {
 }
 
 fn main() -> Result<()> {
-    start_server();
+    let _ = start_server();
     Ok(())
 }
 
