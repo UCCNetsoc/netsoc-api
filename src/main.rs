@@ -16,7 +16,7 @@ struct Event {
 
 #[get("/")]
 async fn api() -> AResult<impl Responder> {
-    let conn = Connection::open("db/database.db")
+    let conn = Connection::open("app/db/database.db")
         .map_err(|e| {
             // Convert the rusqlite error into an Actix Web error
             actix_web::error::ErrorInternalServerError(e)
@@ -78,7 +78,7 @@ async fn start_server() -> std::io::Result<()> {
         App::new()
             .service(api)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("0.0.0.0", 8080))?
     .run()
     .await
 }
