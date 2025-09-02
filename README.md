@@ -8,3 +8,6 @@ This is the API that any of NetSoc's tools can use to figure out what events are
 
 - `cargo build --release`
 - `docker compose up --build`
+
+## Backing up the Database
+run `docker cp {INSERT CONTAINER ID HERE}:/app/db/database.db database-{INSERT CURRENT DATE HERE}.db`
