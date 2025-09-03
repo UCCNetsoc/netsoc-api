@@ -9,11 +9,12 @@
 # https://github.com/docker/awesome-compose
 services:
   app:
+    image: netsoc-api:latest
     build:
       context: .
       target: final
     ports:
-      - 8080:8080
+      - 8082:8080
     volumes:
       - ./db:/app/db
 
