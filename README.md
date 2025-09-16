@@ -14,3 +14,6 @@ run `docker cp {INSERT CONTAINER ID HERE}:/app/db/database.db database-{INSERT C
 
 ## Running
 - Run `docker compose up`
+
+## Production
+docker pull from `yakowa/netsoc-api`
