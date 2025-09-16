@@ -2,6 +2,7 @@ use rusqlite::{Connection, Result};
 use serde::{Deserialize, Serialize};
 use serde_json::{json};
 use actix_web::{get, App, HttpResponse, HttpServer, Responder, Result as AResult};
+use actix_cors::Cors;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Event {
@@ -16,7 +17,7 @@ struct Event {
 
 #[get("/")]
 async fn api() -> AResult<impl Responder> {
-    let conn = Connection::open("app/db/database.db")
+    let conn = Connection::open("db/database.db")
         .map_err(|e| {
             // Convert the rusqlite error into an Actix Web error
             actix_web::error::ErrorInternalServerError(e)
@@ -75,7 +76,9 @@ fn main() -> Result<()> {
 #[actix_web::main]
 async fn start_server() -> std::io::Result<()> {
     HttpServer::new(|| {
+        let cors = Cors::permissive();
         App::new()
+            .wrap(cors)
             .service(api)
     })
     .bind(("0.0.0.0", 8080))?
