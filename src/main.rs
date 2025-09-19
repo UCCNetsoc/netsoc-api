@@ -70,17 +70,17 @@ fn select_from_database(query: &str) -> AResult<impl Responder> {
 
 #[get("/")]
 async fn events_api() -> AResult<impl Responder> {
-    return select_from_database("SELECT * FROM events;");
+    return select_from_database("SELECT * FROM events ORDER BY date;");
 }
 
 #[get("/upcoming_events")]
 async fn upcoming_events_api() -> AResult<impl Responder> {
-    return select_from_database("SELECT * FROM events WHERE date > datetime('now', 'localtime');");
+    return select_from_database("SELECT * FROM events WHERE date > datetime('now', 'localtime') ORDER BY date;");
 }
 
 #[get("/past_events")]
 async fn past_events_api() -> AResult<impl Responder> {
-    return select_from_database("SELECT * FROM events WHERE date < datetime('now', 'localtime');");
+    return select_from_database("SELECT * FROM events WHERE date < datetime('now', 'localtime') ORDER BY date;");
 }
 
 
