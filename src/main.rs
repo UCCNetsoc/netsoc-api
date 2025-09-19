@@ -11,7 +11,8 @@ struct Event {
     date: String,
     location: String,
     public: bool,
-    image_url: String
+    image_url: String,
+    description: String
 }
 
 fn select_from_database(query: &str) -> AResult<impl Responder> {
@@ -36,7 +37,8 @@ fn select_from_database(query: &str) -> AResult<impl Responder> {
             date: row.get(2)?,
             location: row.get(3)?,
             public: row.get(4)?,
-            image_url: row.get(5)?
+            image_url: row.get(5)?,
+            description: row.get(6)?
         })
     })
         .map_err(|e| {
