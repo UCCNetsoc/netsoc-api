@@ -14,9 +14,7 @@ struct Event {
     image_url: String
 }
 
-
-#[get("/")]
-async fn api() -> AResult<impl Responder> {
+fn select_from_database(query: &str) -> AResult<impl Responder> {
     let conn = Connection::open("db/database.db")
         .map_err(|e| {
             // Convert the rusqlite error into an Actix Web error
@@ -24,7 +22,7 @@ async fn api() -> AResult<impl Responder> {
         })?;
 
 
-    let mut stmt = conn.prepare("SELECT * FROM events;")
+    let mut stmt = conn.prepare(query)
         .map_err(|e| {
             actix_web::error::ErrorInternalServerError(e)
         })?;
@@ -68,6 +66,22 @@ async fn api() -> AResult<impl Responder> {
     )
 }
 
+#[get("/")]
+async fn events_api() -> AResult<impl Responder> {
+    return select_from_database("SELECT * FROM events;");
+}
+
+#[get("/upcoming_events")]
+async fn upcoming_events_api() -> AResult<impl Responder> {
+    return select_from_database("SELECT * FROM events WHERE date > datetime('now', 'localtime');");
+}
+
+#[get("/past_events")]
+async fn past_events_api() -> AResult<impl Responder> {
+    return select_from_database("SELECT * FROM events WHERE date < datetime('now', 'localtime');");
+}
+
+
 fn main() -> Result<()> {
     let _ = start_server();
     Ok(())
@@ -79,7 +93,9 @@ async fn start_server() -> std::io::Result<()> {
         let cors = Cors::permissive();
         App::new()
             .wrap(cors)
-            .service(api)
+            .service(events_api)
+            .service(upcoming_events_api)
+            .service(past_events_api)
     })
     .bind(("0.0.0.0", 8080))?
     .run()
